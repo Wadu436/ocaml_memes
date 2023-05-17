@@ -187,3 +187,28 @@ let rand_select list count =
 
 let () = print_list (rand_select [ "a"; "b"; "c"; "d"; "e"; "f"; "g"; "h" ] 3)
 let () = print_newline ()
+
+let lotto_select n m = rand_select (range 1 m) n
+let () = print_list (List.map string_of_int (lotto_select 6 49))
+let () = print_newline ()
+
+let permutation list = rand_select list (List.length list)
+let () = print_list (permutation [ "a"; "b"; "c"; "d"; "e"; "f"; "g"; "h" ])
+let () = print_newline ()
+
+let rec list_sort cmp list = 
+  let rec insert cmp el = function 
+    | [] -> [el]
+    | h::t as l -> if cmp el h <= 0 then el::l else h::(insert cmp el t)
+in
+match list with
+| [] -> []
+| h :: t -> insert cmp h (list_sort cmp t)
+
+let length_sort list = List.map snd (list_sort (fun a b -> fst a - fst b) (List.map (fun l -> (List.length l, l)) list))
+
+let () = print_char '('
+let l = length_sort [["a"; "b"; "c"]; ["d"; "e"]; ["f"; "g"; "h"]; ["d"; "e"]; ["i"; "j"; "k"; "l"]; ["m"; "n"]; ["o"]]
+let _ = List.map print_list l
+let () = print_char ')'
+let () = print_newline ()
